@@ -1,9 +1,7 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
-// const mongoose = require('mongoose')
-// const validator = require('validator')
 
-const User = mongoose.model('User', {
+const UserSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -40,7 +38,14 @@ const User = mongoose.model('User', {
             }
         }
     }
+});
+
+UserSchema.pre('save', async function (next) {
+    const user = this;
+    console.log("JUST BEFORE SAVING");
+    next();
 })
 
+const User = mongoose.model('User', UserSchema);
+
 export default User
-// module.exports = User

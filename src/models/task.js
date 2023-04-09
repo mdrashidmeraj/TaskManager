@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 
-// const mongoose = require('mongoose')
 const Task = mongoose.model('Task', {
     description: {
         type: String,
@@ -14,4 +13,3 @@ const Task = mongoose.model('Task', {
 })
 
 export default Task
-// module.exports = Task

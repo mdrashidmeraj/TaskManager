@@ -1,8 +1,6 @@
 import express from 'express'
 import Task from '../models/task.js'
-// const express = require('express')
 const router = new express.Router()
-// const Task = require('../models/task.js')
 
 
 router.post('/tasks', async (req, res) => {
@@ -78,4 +76,3 @@ router.delete('/tasks/:id', async (req, res) => {
 })
 
 export default router
-// module.exports = router
