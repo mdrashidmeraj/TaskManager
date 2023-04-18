@@ -49,6 +49,7 @@ const UserSchema = new mongoose.Schema({
     }]
 });
 
+// methods for methods that are accessible on the instance i.e user
 UserSchema.methods.generateAuthToken = async function () {
     const user = this;
     const token = jwt.sign({_id: user._id.toString()}, "theSecretKey", { expiresIn: '7 days' });
@@ -57,6 +58,16 @@ UserSchema.methods.generateAuthToken = async function () {
     return token;
 }
 
+// .toJson is called automatically whenvever we are sending a user data (  when a user object is being converted to a JSON object)
+UserSchema.methods.toJSON = function () {
+    const user = this;
+    const userObject = user.toObject();
+    delete userObject.password;
+    delete userObject.tokens;
+    return userObject;
+}
+
+// statics for methods that are accessible on the model i.e User
 UserSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email });
     if(!user){
