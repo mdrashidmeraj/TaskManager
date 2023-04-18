@@ -2,6 +2,7 @@ import express from 'express'
 import User from '../models/user.js'
 const router = new express.Router()
 import {auth} from '../middleware/auth.js'
+import multer from 'multer';
 
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
@@ -85,5 +86,25 @@ router.delete('/users/me', auth, async (req, res) => {
         res.status(500).send()
     }
 })
+
+const upload = multer({
+    dest: 'avatars',
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error('Please upload a image'))
+        }
+        cb(undefined, true)      // callback(error, accepeted)
+    }
+})
+
+router.post('/users/me/avatar', upload.single('avatar'), async (req, res) => {
+    res.send()
+}, (error, req, res, next) => {
+    res.status(400).send({ error: error.message })
+})
+
 
 export default router
